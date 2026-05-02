@@ -1,0 +1,96 @@
+name: Deploy theme to live site
+
+# Builds the Sage theme and uploads it via FTP whenever the `main` branch
+# changes — or when triggered manually from the Actions tab.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   FTP_SERVER     e.g. ftp.your-host.com
+#   FTP_USERNAME   FTP login
+#   FTP_PASSWORD   FTP password
+#
+# Optional repository variables (Settings → Secrets and variables → Actions → Variables):
+#   FTP_SERVER_DIR Remote target dir. Defaults to /public_html/wp-content/themes/luisdev/
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build & FTP deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build production assets
+        run: npm run build
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ vars.FTP_SERVER_DIR || '/public_html/wp-content/themes/luisdev/' }}
+          local-dir: ./
+          # Mirror only what the running theme needs, skip dev / VCS / local files.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            **/.vscode/**
+            **/.idea/**
+            **/.DS_Store
+            **/Thumbs.db
+            **/.env
+            **/.env.*
+            **/*.log
+            **/tests/**
+            **/.editorconfig
+            **/.gitignore
+            **/.gitattributes
+            **/.prettierrc*
+            **/.eslintrc*
+            **/phpunit.xml*
+            **/pint.json
+            **/AGENTS.md
+            **/README.md
+            **/LICENSE.md
+            **/package.json
+            **/package-lock.json
+            **/composer.json
+            **/composer.lock
+            **/vite.config.js
+            **/resources/js/**
+            **/resources/css/**
+            **/resources/images/**
+            **/resources/fonts/**
+            **/storage/framework/cache/**
+            **/storage/framework/views/**

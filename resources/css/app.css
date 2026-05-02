@@ -1,0 +1,45 @@
+@import "tailwindcss" theme(static);
+@source "../../app/**/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+
+/* Enable class-based dark mode (Tailwind v4 custom variant) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Google Sans", "Google Sans Text", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Cream / paper accent backgrounds */
+  --color-cream-50: #fdfbf3;
+  --color-cream-100: #faf7eb;
+  --color-cream-200: #f3eedb;
+  --color-cream-300: #e8e1c4;
+
+  /* Neon green accent */
+  --color-neon-300: #d4ff5a;
+  --color-neon-400: #b8ff2e;
+  --color-neon-500: #9eff00;
+  --color-neon-600: #7ee600;
+}
+
+@keyframes blinking {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@layer base {
+  a {
+    text-decoration: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
