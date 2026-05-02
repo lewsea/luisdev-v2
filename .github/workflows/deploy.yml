@@ -57,7 +57,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ vars.FTP_SERVER_DIR || '/public_html/wp-content/themes/luisdev/' }}
+          server-dir: /public_html/wp-content/themes/luisdev/
           local-dir: ./
           # Mirror only what the running theme needs, skip dev / VCS / local files.
           exclude: |
