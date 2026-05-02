@@ -29,21 +29,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          tools: composer:v2
-          coverage: none
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
-      - name: Install Composer dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
 
       - name: Install npm dependencies
         run: npm ci
@@ -65,6 +55,7 @@ jobs:
             **/.git*/**
             **/.github/**
             **/node_modules/**
+            **/vendor/**
             **/.vscode/**
             **/.idea/**
             **/.DS_Store

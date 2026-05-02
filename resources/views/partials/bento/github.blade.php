@@ -1,7 +1,7 @@
 <x-bento.card class="flex w-full flex-col">
     <div class="flex items-center justify-between">
         <div>
-            <x-bento.eyebrow>{{ __('Pinned on GitHub', 'sage') }}</x-bento.eyebrow>
+            <x-bento.eyebrow>{{ __('Recent on GitHub', 'sage') }}</x-bento.eyebrow>
             <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
                 {{ __('Recent things I have been building', 'sage') }}
             </p>
@@ -69,7 +69,7 @@
         </div>
     @else
         <div class="mt-5 rounded-xl border border-dashed border-cream-300 bg-cream-100/50 p-6 text-center text-sm text-neutral-500 dark:border-neutral-700 dark:bg-neutral-800/40 dark:text-neutral-400">
-            {{ __('Pinned repositories will appear here.', 'sage') }}
+            {{ __('Recent repositories will appear here.', 'sage') }}
             <a href="https://github.com/lewsea" target="_blank" rel="noopener noreferrer" class="font-medium text-neon-600 no-underline hover:text-neon-500 dark:text-neon-400">
                 {{ __('Visit GitHub', 'sage') }} →
             </a>

@@ -7,9 +7,9 @@
     <ul class="mt-4 space-y-3">
         @foreach ([
             ['eyebrow' => __('Building', 'sage'), 'text' => __('A bento-grid portfolio (you\'re looking at it)', 'sage')],
-            ['eyebrow' => __('Griefing', 'sage'), 'text' => 'Griefing Games in Marvel Rivals Ranked'],
-            ['eyebrow' => __('Pretending', 'sage'), 'text' => __('So hard at everything', 'sage')],
+            ['eyebrow' => __('Griefing', 'sage'), 'text' => __('You\'d hate to see me in MR ranked games', 'sage')],
             ['eyebrow' => __('Running', 'sage'), 'text' => __('I quantify the speed of my unhappiness. As long as it can\'t catch me. I can\'t be depressed.', 'sage')],
+            ['eyebrow' => __('Sleeping', 'sage'), 'text' => __('*Snore* Mimimimimimimi 💤💤💤', 'sage')],
         ] as $item)
             <li class="group/now flex items-start gap-3">
                 <span aria-hidden="true" class="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full bg-neon-400 ring-4 ring-neon-400/20 transition group-hover/now:scale-125"></span>

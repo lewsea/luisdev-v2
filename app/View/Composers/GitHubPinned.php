@@ -14,7 +14,7 @@ class GitHubPinned extends Composer
   /**
    * Cache key for the WordPress transient.
    */
-  protected const CACHE_KEY = 'gh_pinned_lewsea_v3';
+  protected const CACHE_KEY = 'gh_recent_lewsea_v1';
 
   /**
    * Cache lifetime in seconds (1 hour).
@@ -64,7 +64,7 @@ class GitHubPinned extends Composer
   ];
 
   /**
-   * Fetch pinned repositories via gh-pinned-repos.egoist.dev,
+   * Fetch the 6 most-recently-pushed public repos via the GitHub REST API,
    * cached in a WordPress transient.
    *
    * Falls back to an empty array on error so the view degrades gracefully.
@@ -76,12 +76,12 @@ class GitHubPinned extends Composer
       return $cached;
     }
 
-    $endpoint = 'https://gh-pinned-repos.egoist.dev/?username=' . self::USERNAME;
+    $endpoint = 'https://api.github.com/users/' . self::USERNAME . '/repos?sort=pushed&direction=desc&per_page=6&type=public';
 
     $response = wp_remote_get($endpoint, [
       'timeout' => 5,
       'headers' => [
-        'Accept'     => 'application/json',
+        'Accept'     => 'application/vnd.github+json',
         'User-Agent' => 'WordPress/' . get_bloginfo('version'),
       ],
     ]);
@@ -98,21 +98,18 @@ class GitHubPinned extends Composer
       return [];
     }
 
-    // Normalise egoist shape → view shape.
-    // Egoist returns: { owner, repo, description, language, languageColor, stars, forks }
+    // Normalise GitHub REST shape → view shape.
     $data = array_map(function (array $item): array {
-      $lang  = $item['language'] ?? '';
-      $owner = $item['owner'] ?? self::USERNAME;
-      $repo  = $item['repo'] ?? '';
+      $lang = $item['language'] ?? '';
 
       return [
-        'name'          => $repo,
-        'url'           => $item['link'] ?? "https://github.com/{$owner}/{$repo}",
+        'name'          => $item['name'] ?? '',
+        'url'           => $item['html_url'] ?? "https://github.com/" . self::USERNAME . "/" . ($item['name'] ?? ''),
         'description'   => $item['description'] ?? '',
         'language'      => $lang,
-        'languageColor' => $item['languageColor'] ?? (self::LANGUAGE_COLORS[$lang] ?? '#9eff00'),
-        'stars'         => $item['stars'] ?? 0,
-        'forks'         => $item['forks'] ?? 0,
+        'languageColor' => self::LANGUAGE_COLORS[$lang] ?? '#9eff00',
+        'stars'         => $item['stargazers_count'] ?? 0,
+        'forks'         => $item['forks_count'] ?? 0,
       ];
     }, $raw);
 

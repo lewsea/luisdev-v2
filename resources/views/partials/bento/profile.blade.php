@@ -9,7 +9,7 @@
                 loading="eager"
                 class="h-24 w-24 rounded-full ring-4 ring-cream-200 dark:ring-neutral-800"
             />
-            <span aria-hidden="true" class="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full bg-neon-400 ring-4 ring-neon-400/20 transition group-hover/now:scale-125"></span>
+            <span aria-hidden="true" class="absolute bottom-0.5 right-0.5 h-3 w-3 shrink-0 rounded-full bg-neon-400 ring-2 ring-white dark:ring-neutral-950 transition group-hover/now:scale-125"></span>
         </div>
         <div>
             <p class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
@@ -19,7 +19,7 @@
                 {{ __('Luis Gudmalin', 'sage') }}
             </h1>
             <p class="mt-1 text-base text-neutral-600 dark:text-neutral-300">
-                {{ __('Developer & Designer', 'sage') }}
+                {{ __('Web Developer', 'sage') }}
             </p>
         </div>
     </div>

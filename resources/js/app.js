@@ -2,7 +2,7 @@ import { gsap } from 'gsap';
 
 // ---------------------------------------------------------------------------
 // Theme Toggle (light / dark)
-// Light mode is the default. Preference is persisted in localStorage.
+// Dark mode is the default. Preference is persisted in localStorage.
 // ---------------------------------------------------------------------------
 function initThemeToggle() {
   const root = document.documentElement;
