@@ -1,1 +1,425 @@
 @import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Editor design tokens  (mirror app.css theme values)
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --ed-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --ed-ink: #0a0a0a;
+  --ed-ink-2: #1a1a1a;
+  --ed-muted: #5c5c5c;
+  --ed-line: #d0cfc8;
+  --ed-cream: #f0efea;
+  --ed-brand: #43c3f9;
+  --ed-gold: #c8953a;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Canvas base
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper {
+  font-family: var(--ed-font);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--ed-ink-2);
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Paragraph
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper p {
+  margin: 0 0 1.25em;
+  line-height: 1.75;
+  color: var(--ed-ink-2);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Headings
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6 {
+  font-family: var(--ed-font);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  color: var(--ed-ink);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+.editor-styles-wrapper h1 {
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+}
+
+.editor-styles-wrapper h2 {
+  font-size: clamp(1.5rem, 3vw, 2.125rem);
+}
+
+.editor-styles-wrapper h3 {
+  font-size: 1.5rem;
+}
+
+.editor-styles-wrapper h4 {
+  font-size: 1.25rem;
+}
+
+.editor-styles-wrapper h5 {
+  font-size: 1.0625rem;
+}
+
+.editor-styles-wrapper h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Links
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper a {
+  color: var(--ed-brand);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Lists
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper ul,
+.editor-styles-wrapper ol {
+  margin: 0 0 1.25em;
+  padding-left: 1.5em;
+}
+
+.editor-styles-wrapper ul {
+  list-style-type: disc;
+}
+
+.editor-styles-wrapper ol {
+  list-style-type: decimal;
+}
+
+.editor-styles-wrapper li {
+  margin-bottom: 0.375em;
+  line-height: 1.7;
+}
+
+.editor-styles-wrapper li>ul,
+.editor-styles-wrapper li>ol {
+  margin: 0.375em 0 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Blockquote
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper blockquote,
+.editor-styles-wrapper .wp-block-quote {
+  border-left: 3px solid var(--ed-brand);
+  padding: 0.125rem 0 0.125rem 1.5rem;
+  margin: 2em 0;
+  font-style: italic;
+}
+
+.editor-styles-wrapper .wp-block-quote p {
+  font-size: 1.0625rem;
+  color: var(--ed-muted);
+  margin: 0;
+}
+
+.editor-styles-wrapper .wp-block-quote cite,
+.editor-styles-wrapper .wp-block-quote footer {
+  display: block;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--ed-muted);
+  margin-top: 0.75em;
+  letter-spacing: 0.01em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Pullquote
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .wp-block-pullquote {
+  border-top: 2px solid var(--ed-ink);
+  border-bottom: 2px solid var(--ed-ink);
+  padding: 1.75rem 1rem;
+  margin: 2.5em 0;
+  text-align: center;
+}
+
+.editor-styles-wrapper .wp-block-pullquote blockquote {
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+}
+
+.editor-styles-wrapper .wp-block-pullquote p {
+  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+  color: var(--ed-ink);
+}
+
+.editor-styles-wrapper .wp-block-pullquote cite {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ed-muted);
+  margin-top: 0.75em;
+  display: block;
+  font-style: normal;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Code
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper code {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  font-size: 0.875em;
+  background: var(--ed-cream);
+  color: var(--ed-ink);
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  letter-spacing: 0;
+}
+
+.editor-styles-wrapper pre,
+.editor-styles-wrapper .wp-block-code {
+  background: var(--ed-ink);
+  color: #f0efea;
+  padding: 1.25rem 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  letter-spacing: 0;
+  margin: 1.75em 0;
+}
+
+.editor-styles-wrapper pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Tables
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper table,
+.editor-styles-wrapper .wp-block-table table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.75em 0;
+  font-size: 0.9375rem;
+}
+
+.editor-styles-wrapper th,
+.editor-styles-wrapper .wp-block-table th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.625rem 1rem;
+  border-bottom: 2px solid var(--ed-ink);
+  color: var(--ed-ink);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.editor-styles-wrapper td,
+.editor-styles-wrapper .wp-block-table td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--ed-line);
+  color: var(--ed-ink-2);
+  vertical-align: top;
+}
+
+.editor-styles-wrapper tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.editor-styles-wrapper .wp-block-table.is-style-stripes tbody tr:nth-child(odd) td {
+  background: var(--ed-cream);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Separator / HR
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper hr,
+.editor-styles-wrapper .wp-block-separator:not(.is-style-dots) {
+  border: none;
+  border-top: 1px solid var(--ed-line);
+  margin: 2.5em auto;
+}
+
+.editor-styles-wrapper .wp-block-separator.is-style-wide {
+  border-top-width: 2px;
+  border-color: var(--ed-ink);
+}
+
+.editor-styles-wrapper .wp-block-separator.is-style-dots {
+  border: none;
+  text-align: center;
+  margin: 2.5em 0;
+  line-height: 1;
+  height: auto;
+}
+
+.editor-styles-wrapper .wp-block-separator.is-style-dots::before {
+  content: "· · ·";
+  color: var(--ed-muted);
+  font-size: 1.25rem;
+  letter-spacing: 0.5em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Images & Figures
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper figure,
+.editor-styles-wrapper .wp-block-image {
+  margin: 2em 0;
+}
+
+.editor-styles-wrapper img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
+.editor-styles-wrapper figcaption,
+.editor-styles-wrapper .wp-element-caption {
+  font-size: 0.8125rem;
+  color: var(--ed-muted);
+  text-align: center;
+  margin-top: 0.625rem;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Buttons block
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .wp-block-button__link {
+  font-family: var(--ed-font);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: -0.01em;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1.5rem !important;
+  line-height: 1;
+}
+
+.editor-styles-wrapper .wp-block-button:not(.is-style-outline) .wp-block-button__link {
+  background-color: var(--ed-brand) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.editor-styles-wrapper .wp-block-button.is-style-outline .wp-block-button__link {
+  background: transparent !important;
+  border: 1px solid var(--ed-brand) !important;
+  color: var(--ed-brand) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Cover block
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .wp-block-cover {
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 2em 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Columns
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .wp-block-columns {
+  margin: 2em 0;
+  gap: 1.5rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Verse
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .wp-block-verse {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  color: var(--ed-muted);
+  border-left: 3px solid var(--ed-line);
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  margin: 2em 0;
+  white-space: pre-wrap;
+  font-style: normal;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Details / accordion
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper details {
+  border: 1px solid var(--ed-line);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 1em 0;
+}
+
+.editor-styles-wrapper summary {
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ed-ink);
+  letter-spacing: -0.02em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   File block
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .wp-block-file {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--ed-cream);
+  border: 1px solid var(--ed-line);
+  border-radius: 8px;
+  padding: 0.875rem 1.125rem;
+  margin: 1.5em 0;
+}
+
+.editor-styles-wrapper .wp-block-file a:not(.wp-block-file__button) {
+  font-weight: 500;
+  color: var(--ed-ink);
+  text-decoration: none;
+  flex: 1;
+}
+
+.editor-styles-wrapper .wp-block-file .wp-block-file__button {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: var(--ed-brand);
+  color: #fff;
+  padding: 0.45rem 0.875rem;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Group block defaults
+   ───────────────────────────────────────────────────────────── */
+.editor-styles-wrapper .wp-block-group.has-background {
+  padding: 1.5rem;
+  border-radius: 8px;
+}
