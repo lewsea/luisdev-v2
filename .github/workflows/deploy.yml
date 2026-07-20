@@ -71,7 +71,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          server-dir: /wp-content/themes/online-projects/
+          server-dir: /wp-content/themes/luisdev/
           # Mirror only what the running theme needs, skip dev / VCS / local files.
           exclude: |
             **/.git*
