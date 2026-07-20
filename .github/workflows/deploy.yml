@@ -9,7 +9,7 @@ name: Deploy theme to live site
 #   FTP_PASSWORD   FTP password
 #
 # Optional repository variables (Settings → Secrets and variables → Actions → Variables):
-#   FTP_SERVER_DIR Remote target dir. Defaults to /public_html/wp-content/themes/luisdev/
+#   FTP_SERVER_DIR Remote target dir. Defaults to /public_html/wp-content/themes/online-projects/
 
 on:
   push:
@@ -27,13 +27,32 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Audit Composer dependencies for known CVEs
+        run: composer audit
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
-          node-version: '22'
-          cache: 'npm'
+          node-version: "22"
+          cache: "npm"
 
       - name: Install npm dependencies
         run: npm ci
@@ -41,21 +60,24 @@ jobs:
       - name: Build production assets
         run: npm run build
 
+      - name: Ensure no Vite hot file is deployed
+        run: rm -f public/hot
+
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /wp-content/themes/luisdev/
-          local-dir: ./
+          protocol: ftps
+          port: 21
+          server-dir: /domain/wp-content/themes/online-projects/
           # Mirror only what the running theme needs, skip dev / VCS / local files.
           exclude: |
             **/.git*
             **/.git*/**
             **/.github/**
             **/node_modules/**
-            **/vendor/**
             **/.vscode/**
             **/.idea/**
             **/.DS_Store
@@ -72,6 +94,7 @@ jobs:
             **/phpunit.xml*
             **/pint.json
             **/AGENTS.md
+            **/TODO.md
             **/README.md
             **/LICENSE.md
             **/package.json
@@ -79,6 +102,8 @@ jobs:
             **/composer.json
             **/composer.lock
             **/vite.config.js
+            **/online-projects-agentbox
+            **/online-projects-agentbox/**
             **/resources/js/**
             **/resources/css/**
             **/resources/images/**
