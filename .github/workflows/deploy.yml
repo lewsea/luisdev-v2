@@ -36,6 +36,7 @@ jobs:
           tools: composer:v2
 
       - name: Cache Composer packages
+        id: composer-cache
         uses: actions/cache@v4
         with:
           path: vendor
@@ -43,6 +44,7 @@ jobs:
           restore-keys: composer-
 
       - name: Install Composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
       - name: Audit Composer dependencies for known CVEs
@@ -63,7 +65,19 @@ jobs:
       - name: Ensure no Vite hot file is deployed
         run: rm -f public/hot
 
-      - name: Deploy via FTP
+      - name: Check if vendor deploy is needed
+        id: vendor-check
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]] || \
+             ! git rev-parse HEAD^ >/dev/null 2>&1 || \
+             git diff --name-only HEAD^ HEAD -- composer.lock | grep -q composer.lock; then
+            echo "deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy vendor via FTP
+        if: steps.vendor-check.outputs.deploy == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -71,13 +85,25 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          server-dir: /wp-content/themes/luisdev/
+          local-dir: ./vendor/
+          server-dir: /domain/wp-content/themes/online-projects/vendor/
+
+      - name: Deploy theme files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          server-dir: /domain/wp-content/themes/online-projects/
           # Mirror only what the running theme needs, skip dev / VCS / local files.
           exclude: |
             **/.git*
             **/.git*/**
             **/.github/**
             **/node_modules/**
+            **/vendor/**
             **/.vscode/**
             **/.idea/**
             **/.DS_Store
