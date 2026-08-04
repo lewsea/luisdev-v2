@@ -32,11 +32,10 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.4"
+          php-version: "8.3"
           tools: composer:v2
 
       - name: Cache Composer packages
-        id: composer-cache
         uses: actions/cache@v4
         with:
           path: vendor
@@ -44,7 +43,6 @@ jobs:
           restore-keys: composer-
 
       - name: Install Composer dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
       - name: Audit Composer dependencies for known CVEs
@@ -53,7 +51,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "20"
           cache: "npm"
 
       - name: Install npm dependencies
@@ -65,30 +63,7 @@ jobs:
       - name: Ensure no Vite hot file is deployed
         run: rm -f public/hot
 
-      - name: Check if vendor deploy is needed
-        id: vendor-check
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]] || \
-             ! git rev-parse HEAD^ >/dev/null 2>&1 || \
-             git diff --name-only HEAD^ HEAD -- composer.lock | grep -q composer.lock; then
-            echo "deploy=true" >> $GITHUB_OUTPUT
-          else
-            echo "deploy=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Deploy vendor via FTP
-        if: steps.vendor-check.outputs.deploy == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: ./vendor/
-          server-dir: /wp-content/themes/luisdev/vendor/
-
-      - name: Deploy theme files via FTP
+      - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -128,8 +103,6 @@ jobs:
             **/composer.json
             **/composer.lock
             **/vite.config.js
-            **/online-projects-agentbox
-            **/online-projects-agentbox/**
             **/resources/js/**
             **/resources/css/**
             **/resources/images/**
