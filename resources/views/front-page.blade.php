@@ -33,9 +33,18 @@
 
         </div>
 
-        {{-- Full-width rows --}}
+        {{-- Lower row: GitHub (38% + 32%) + image block (30%) --}}
+        <div class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-start">
+            <div class="flex flex-col gap-4 lg:w-[70%]">
+                @include('partials.bento.github')
+            </div>
+            <div class="flex flex-col gap-4 lg:w-[30%]">
+                @include('partials.bento.image-block')
+            </div>
+        </div>
+
+        {{-- Figma row --}}
         <div class="mt-4 flex flex-col gap-4">
-            @include('partials.bento.github')
             @include('partials.bento.figma')
         </div>
 
