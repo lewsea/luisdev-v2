@@ -9,36 +9,37 @@
         </div>
 
         {{-- Bento: 3-column layout (stacks on mobile, side-by-side on lg) --}}
-        <div class="flex flex-col gap-4 lg:flex-row lg:items-start">
+        <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[38fr_32fr_30fr]">
 
-            {{-- Left column — hero identity + video + clock --}}
-            <div class="flex flex-col gap-4 lg:w-[38%]">
+            {{-- Left column — hero identity, video, clock, nyan cat --}}
+            <div class="flex min-w-0 flex-col gap-4">
                 @include('partials.bento.profile')
                 @include('partials.bento.youtube')
                 @include('partials.bento.clock')
-            </div>
-
-            {{-- Middle column — quote, now, nyan cat --}}
-            <div class="flex flex-col gap-4 lg:w-[32%]">
-                @include('partials.bento.quote')
-                @include('partials.bento.now')
                 @include('partials.bento.particles')
             </div>
 
-            {{-- Right column — contact, spotify --}}
-            <div class="flex flex-col gap-4 lg:w-[30%]">
-                @include('partials.bento.contact')
+            {{-- Middle column — quote, now, spotify --}}
+            <div class="flex min-w-0 flex-col gap-4">
+                @include('partials.bento.quote')
+                @include('partials.bento.now')
                 @include('partials.bento.spotify')
+            </div>
+
+            {{-- Right column — contact, Strava --}}
+            <div class="flex min-w-0 flex-col gap-4">
+                @include('partials.bento.contact')
+                @include('partials.bento.strava')
             </div>
 
         </div>
 
         {{-- Lower row: GitHub (38% + 32%) + image block (30%) --}}
-        <div class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-start">
-            <div class="flex flex-col gap-4 lg:w-[70%]">
+        <div class="mt-4 grid grid-cols-1 items-start gap-4 lg:grid-cols-[70fr_30fr]">
+            <div class="flex min-w-0 flex-col gap-4">
                 @include('partials.bento.github')
             </div>
-            <div class="flex flex-col gap-4 lg:w-[30%]">
+            <div class="flex min-w-0 flex-col gap-4">
                 @include('partials.bento.image-block')
             </div>
         </div>
