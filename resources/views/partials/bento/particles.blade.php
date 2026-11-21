@@ -1,8 +1,8 @@
 <x-bento.card :padded="false" class="w-full flex-1">
     <div class="relative aspect-video w-full overflow-hidden bg-neutral-950">
         <img
-            src="https://camo.githubusercontent.com/9753f1e01652edc8891a08c991ea4257ab55e1e7ba9a2dc627e188f5154624d8/68747470733a2f2f76696e63656e74676172726561752e636f6d2f7061727469636c65732e6a732f6173736574732f696d672f6b624c643976625f6e65772e676966"
-            alt="{{ __('particles.js animation', 'sage') }}"
+            src="{{ asset('resources/images/nyan-cat.gif') }}"
+            alt="{{ __('nyan cat', 'sage') }}"
             class="h-full w-full object-contain"
             loading="lazy"
         />
